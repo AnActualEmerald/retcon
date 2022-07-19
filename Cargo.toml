@@ -11,6 +11,7 @@ bytes = "1.1.0"
 crossterm = "0.24.0"
 prost = "0.10.4"
 rustyline = "10.0.0"
+tokio = { version = "1.20.0", features = ["full"] }
 
 [build-dependencies]
 prost-build = "0.10.4"

@@ -6,14 +6,15 @@ use crossterm::{cursor, execute, style::Print, terminal};
 mod client;
 mod proto;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let mut stdout = io::stdout();
-    if let Err(e) = run(&mut stdout) {
+    if let Err(e) = run(&mut stdout).await {
         println!("{}", e);
     }
 }
 
-fn run<W>(w: &mut W) -> Result<()>
+async fn run<W>(w: &mut W) -> Result<()>
 where
     W: Write,
 {
@@ -30,7 +31,7 @@ where
     )?;
 
     //let the terminal exit the screen rather than return early on error
-    let ret = client::start();
+    let ret = client::start().await;
 
     execute!(w, terminal::LeaveAlternateScreen)?;
 

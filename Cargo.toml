@@ -8,10 +8,8 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.58"
 bytes = "1.1.0"
-crossterm = "0.24.0"
-prost = "0.10.4"
-rustyline = "10.0.0"
+clap = { version = "3.2.16", features = ["derive"] }
+cursive = { version = "0.19.0", default-features = false, features = ["maplit", "term_size", "crossterm", "crossterm-backend"] }
+northstar-rcon-client = "0.2.1"
 tokio = { version = "1.20.0", features = ["full"] }
 
-[build-dependencies]
-prost-build = "0.10.4"

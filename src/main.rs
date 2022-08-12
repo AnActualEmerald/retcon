@@ -1,44 +1,39 @@
-// use std::io::{self, Write};
+use std::{
+    fs,
+    sync::{Arc, Mutex},
+};
 
-// use anyhow::Result;
-use cursive::traits::*;
-use cursive::view::SizeConstraint;
-use cursive::views::Dialog;
-use cursive::Cursive;
+use clap::Parser;
+use directories::ProjectDirs;
+use model::Config;
 
-// mod client;
-// mod proto;
+mod model;
+mod ui;
+
+#[derive(Debug, Parser)]
+#[clap(author, version, about)]
+struct Cli {}
 
 #[tokio::main]
 async fn main() {
-    let mut siv = cursive::default();
+    Cli::parse();
+    let dirs = ProjectDirs::from("me", "greenboi", "retcon").unwrap();
+    ensure_dirs(&dirs);
+    let cfg = Arc::new(Mutex::new(
+        Config::load(dirs.config_dir().join("config.ron")).unwrap(),
+    ));
 
-    siv.add_fullscreen_layer(
-        Dialog::text("This is a survey!\nPress <Next> when you're ready.")
-            .title("Important survey")
-            .button("Next", show_next)
-            .resized(SizeConstraint::Full, SizeConstraint::Full),
-    );
+    let initial = ui::server_select::ServerView::new(cfg.clone());
 
-    siv.run();
+    let mut s = cursive::default();
+
+    s.add_layer(initial.inner());
+
+    s.run();
+
+    cfg.lock().unwrap().save().unwrap();
 }
 
-fn show_next(s: &mut Cursive) {
-    s.pop_layer();
-    s.add_layer(
-        Dialog::text("Did you do the thing?")
-            .title("Question 1")
-            .button("Yes!", |s| show_answer(s, "I knew it! Well done!"))
-            .button("No!", |s| show_answer(s, "I knew you couldn't be trusted!"))
-            .button("Uh?", |s| s.add_layer(Dialog::info("Try again!"))),
-    );
-}
-
-fn show_answer(s: &mut Cursive, msg: &str) {
-    s.pop_layer();
-    s.add_layer(
-        Dialog::text(msg)
-            .title("Results")
-            .button("Finish", |s| s.quit()),
-    );
+fn ensure_dirs(dirs: &ProjectDirs) {
+    fs::create_dir_all(dirs.config_dir()).expect("Unable to create configuration directory");
 }

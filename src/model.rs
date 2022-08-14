@@ -42,3 +42,10 @@ pub struct Server {
     pub url: String,
     pub port: String,
 }
+
+#[derive(Debug, Clone)]
+pub enum Msg {
+    Start { target: Server, password: String },
+    Send { message: String },
+    Stop,
+}

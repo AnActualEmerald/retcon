@@ -1,18 +1,20 @@
-use std::sync::{Arc, Mutex};
+use std::cell::RefCell;
+use std::rc::Rc;
 
 use cursive::views::{Button, Dialog, DummyView, LinearLayout, SelectView};
 use cursive::{traits::*, Cursive};
+use tokio::sync::mpsc::Sender;
 
-use crate::model::{Config, Server};
+use crate::model::{Config, Msg};
 
-use super::add_popup;
+use super::{add_popup, password_popup};
 
 pub struct ServerView {
     inner: Dialog,
 }
 
 impl ServerView {
-    pub fn new(cfg: Arc<Mutex<Config>>) -> Self {
+    pub fn new(cfg: Rc<RefCell<Config>>, channel: Sender<Msg>) -> Self {
         let c = cfg.clone();
         let add_server = move |s: &mut Cursive| {
             add_popup::show(s, c.clone());
@@ -25,7 +27,7 @@ impl ServerView {
                 None => s.add_layer(Dialog::info("Please select the server to remove")),
                 Some(f) => {
                     if let Some((name, _)) = select.get_item(f) {
-                        let mut c = c.lock().unwrap();
+                        let mut c = c.borrow_mut();
                         if c.servers.contains_key(name) {
                             c.servers.remove(name);
                         }
@@ -36,8 +38,25 @@ impl ServerView {
             }
         };
 
+        let c = cfg.clone();
+        let chan = channel.clone();
         let select = SelectView::<String>::new()
-            .with_all_str(cfg.lock().unwrap().servers.keys())
+            .autojump()
+            .on_submit(move |s, name: &str| {
+                let c = c.borrow();
+                if c.servers.contains_key(name) {
+                    let server = c.servers.get(name).unwrap();
+                    password_popup::show(s, server.clone(), chan.clone());
+                } else {
+                    s.add_layer(Dialog::info("No server of that name was found!").button(
+                        "OK",
+                        |s| {
+                            s.pop_layer();
+                        },
+                    ));
+                }
+            })
+            .with_all_str(cfg.borrow_mut().servers.keys())
             .with_name("servers")
             .fixed_size((10i32, 20i32));
 

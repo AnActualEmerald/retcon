@@ -1,0 +1,18 @@
+shadow = false
+borders = "simple" # Alternatives are "none" and "simple"
+
+[colors]
+background = ["#282a36", "454", "magenta"]
+primary   = ["#f8f8f2"]
+secondary = "#6272a4"
+tertiary  = "#ffb86c"
+
+view = "#44475a"
+
+title_primary   = ["#50fa7b", "yellow"] 
+title_secondary = "#bd93f9"
+
+highlight          = "#bd93f9"
+highlight_inactive = "#6272a4"
+
+

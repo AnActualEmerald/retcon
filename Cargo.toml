@@ -11,7 +11,7 @@ license = "MIT"
 anyhow = "1.0.58"
 bytes = "1.1.0"
 clap = { version = "3.2.16", features = ["derive"] }
-cursive = { version = "0.19.0", default-features = false, features = ["maplit", "term_size", "crossterm", "crossterm-backend"] }
+cursive = { version = "0.19.0", default-features = false, features = ["maplit", "term_size", "crossterm", "crossterm-backend", "toml"] }
 directories = "4.0.1"
 northstar-rcon-client = "0.2.1"
 ron = "0.7.1"

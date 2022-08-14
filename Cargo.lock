@@ -713,7 +713,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "retcon"
+name = "retcon-ns"
 version = "0.1.0-alpha"
 dependencies = [
  "anyhow",

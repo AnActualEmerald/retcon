@@ -43,22 +43,20 @@ pub async fn start(sink: cursive::CbSink, tx: Sender<Msg>, mut rx: Receiver<Msg>
                                 wr = Some(writer);
                                 let s = sink.clone();
                                 let h = tokio::spawn(async move {
-                                    loop {
-                                        if let Ok(msg) = reader.receive_console_log().await {
-                                            s.send(Box::new(move |s| {
-                                                s.call_on_name("output", |view: &mut ListView| {
-                                                    view.add_child("[SERVER]", TextView::new(&msg));
-                                                });
-                                            }))
-                                            .unwrap();
-                                        } else {
-                                            break;
-                                        }
+                                    while let Ok(msg) = reader.receive_console_log().await {
+                                        s.send(Box::new(move |s| {
+                                            s.call_on_name("output", |view: &mut ListView| {
+                                                view.add_child("[SERVER]", TextView::new(&msg));
+                                            });
+                                        }))
+                                        .unwrap();
                                     }
                                 });
                                 handle = Some(h);
                             }
-                            Err(_) => {}
+                            Err(_) => {
+                                todo!();
+                            }
                         }
                     } else {
                         sink.send(Box::new(|s| {

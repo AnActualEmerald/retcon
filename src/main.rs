@@ -35,7 +35,7 @@ fn main() {
         client::start(sink, t, rx).await;
     });
 
-    let initial = ui::server_select::ServerView::new(cfg.clone(), tx.clone());
+    let initial = ui::server_select::ServerView::new(cfg.clone(), tx);
     s.add_layer(initial.inner());
     s.add_global_callback('+', cursive::Cursive::toggle_debug_console);
 

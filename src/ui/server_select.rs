@@ -39,7 +39,7 @@ impl ServerView {
         };
 
         let c = cfg.clone();
-        let chan = channel.clone();
+        let chan = channel;
         let select = SelectView::<String>::new()
             .autojump()
             .on_submit(move |s, name: &str| {

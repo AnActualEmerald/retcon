@@ -8,7 +8,7 @@ use std::{cell::RefCell, rc::Rc};
 use crate::model::{Config, Server};
 
 pub fn show(s: &mut Cursive, cfg: Rc<RefCell<Config>>) {
-    let c = cfg.clone();
+    let c = cfg;
     let root = ListView::new()
         .child(
             "Server Name:",

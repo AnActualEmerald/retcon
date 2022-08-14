@@ -10,7 +10,7 @@ use tokio::sync::mpsc::Sender;
 
 use crate::model::{Msg, Server};
 
-pub fn show<'a>(s: &mut Cursive, server: Server, channel: Sender<Msg>) {
+pub fn show(s: &mut Cursive, server: Server, channel: Sender<Msg>) {
     fn start(s: &mut Cursive, channel: Sender<Msg>, target: Server) {
         if let Some(password) = s.call_on_name("password", |v: &mut EditView| v.get_content()) {
             if *password == String::new() {
@@ -47,8 +47,8 @@ pub fn show<'a>(s: &mut Cursive, server: Server, channel: Sender<Msg>) {
             .fixed_width(20),
     );
 
-    let chan = channel.clone();
-    let serv = server.clone();
+    let chan = channel;
+    let serv = server;
     s.add_layer(
         Dialog::around(layout)
             .title("Enter server password")

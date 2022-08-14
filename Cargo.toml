@@ -4,7 +4,8 @@ version = "0.1.0-alpha"
 edition = "2021"
 authors = ["AnActualEmerald"]
 license = "MIT"
-
+description = "RCON TUI for Northstar dedicated servers"
+repository = "https://github.com/AnActualEmerald/retcon"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

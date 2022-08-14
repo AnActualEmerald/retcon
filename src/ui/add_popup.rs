@@ -18,7 +18,7 @@ pub fn show(s: &mut Cursive, cfg: Rc<RefCell<Config>>) {
         .child(
             "PORT:",
             EditView::new()
-                .content("30715")
+                .content("37015")
                 .with_name("port")
                 .fixed_width(10),
         );

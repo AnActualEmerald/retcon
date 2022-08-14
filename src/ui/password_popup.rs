@@ -1,8 +1,7 @@
 use cursive::{
     align::HAlign,
-    logger::log,
-    reexports::log::{self, debug},
-    views::{Dialog, DummyView, EditView, LinearLayout, ListView, TextView},
+    reexports::log::debug,
+    views::{Dialog, EditView, ListView, TextView},
     Cursive,
 };
 

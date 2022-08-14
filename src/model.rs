@@ -43,6 +43,7 @@ pub struct Server {
     pub port: String,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 pub enum Msg {
     Start { target: Server, password: String },

@@ -35,7 +35,7 @@ pub async fn start(sink: cursive::CbSink, tx: Sender<Msg>, mut rx: Receiver<Msg>
                                 .unwrap();
                                 let t = tx.clone();
                                 sink.send(Box::new(move |s| {
-                                    s.add_active_screen();
+                                    // s.add_active_screen();
                                     s.add_fullscreen_layer(ui::main_view::build(t));
                                 }))
                                 .unwrap();
@@ -71,15 +71,27 @@ pub async fn start(sink: cursive::CbSink, tx: Sender<Msg>, mut rx: Receiver<Msg>
                         w.exec_command(&message).await.unwrap();
                     }
                 }
+                Msg::Set { var, val } => {
+                    if let Some(w) = wr.as_mut() {
+                        w.set_value(&var, &val).await.unwrap();
+                    }
+                }
                 Msg::Stop => {
-                    if let Some(h) = handle {
+                    if let Some(h) = &handle {
+                        sink.send(Box::new(|s| {
+                            s.pop_layer();
+                        }))
+                        .unwrap();
+                        wr = None;
                         h.abort();
                     }
-                    break;
                 }
             },
             Err(TryRecvError::Disconnected) => {
-                break;
+                if let Some(h) = &handle {
+                    h.abort();
+                    wr = None;
+                }
             }
             Err(TryRecvError::Empty) => {
                 // debug!("Sleeping");

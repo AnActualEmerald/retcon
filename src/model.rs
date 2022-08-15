@@ -48,5 +48,6 @@ pub struct Server {
 pub enum Msg {
     Start { target: Server, password: String },
     Send { message: String },
+    Set { var: String, val: String },
     Stop,
 }

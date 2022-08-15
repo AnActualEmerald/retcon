@@ -714,7 +714,7 @@ dependencies = [
 
 [[package]]
 name = "retcon-ns"
-version = "0.1.0-alpha"
+version = "0.1.0-alpha.1"
 dependencies = [
  "anyhow",
  "bytes",

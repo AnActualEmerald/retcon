@@ -22,7 +22,7 @@ pub fn build(tx: Sender<Msg>) -> ResizedView<Dialog> {
                     s.call_on_name("output", |v: &mut ListView| {
                         v.add_child("[CLIENT]", TextView::new(msg));
                     });
-                    if msg.starts_with("/") {
+                    if msg.starts_with('/') {
                         let mut parts = msg.split(' ');
                         match parts.next() {
                             Some("/leave") | Some("/quit") => {
@@ -33,7 +33,7 @@ pub fn build(tx: Sender<Msg>) -> ResizedView<Dialog> {
                                     let val = parts.collect::<Vec<&str>>().join(" ");
                                     tx.blocking_send(Msg::Set {
                                         var: var.to_string(),
-                                        val: val.to_string(),
+                                        val,
                                     })
                                     .unwrap();
                                 }
